@@ -1,10 +1,17 @@
 # This program will insert all the json files in a folder into a mongodb database
 
-# Create an env.list file with the following values
+If you are running the python file directly make sure you set the environment variables for it to work.
 
-    CONNECTION_STRING=mongodb://host.docker.internal:27017
-    DATABASE=Candidates
-    COLLECTION=resumes
+#Linux and Mac: export CONNECTION_STRING="mongodb connection string" DATABASE="Database name" COLLECTION="Collection Name" JSON_FILES_DIRECTORY="path to json directory"
+#Windows Powershell: $env:CONNECTION_STRING = "mongodb connection string"; $env:DATABASE = "Database name"; $env:COLLECTION = "Collection Name"; $env:JSON_FILES_DIRECTORY = "path to json directory"
+
+If you are running it in a docker container you have 2 options:
+
+1. Clone this repo and create an env.list file with the following values
+
+    CONNECTION_STRING=mongodb connection string
+    DATABASE=Database name
+    COLLECTION=Collection Name
     JSON_FILES_DIRECTORY=/mapped_files
 
 - the connection string is the connection string to your mongodb database
@@ -17,3 +24,5 @@ docker build -t <IMAGE> .
 
 #Run the container
 docker run --env-file <path to env.list file> -v <path to json files>:/mapped_files <IMAGE>
+
+2. Create the env.list file as above, pull this image and run: docker run --env-file <path to env.list file> -v <path to json files>:/mapped_files <IMAGE>
