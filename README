@@ -25,4 +25,4 @@ docker build -t <IMAGE> .
 #Run the container
 docker run --env-file <path to env.list file> -v <path to json files>:/mapped_files <IMAGE>
 
-2. Create the env.list file as above, pull this image and run: docker run --env-file <path to env.list file> -v <path to json files>:/mapped_files <IMAGE>
+2. Create the `env.list` file as above, pull [this image](https://hub.docker.com/repository/docker/hekcode/data_science) and run: `docker run --env-file <path to env.list file> -v <path to json files>:/mapped_files <IMAGE>
