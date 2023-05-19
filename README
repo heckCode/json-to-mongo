@@ -5,7 +5,7 @@ If you are running the python file directly make sure you set the environment va
 #Linux and Mac: export CONNECTION_STRING="mongodb connection string" DATABASE="Database name" COLLECTION="Collection Name" JSON_FILES_DIRECTORY="path to json directory"
 #Windows Powershell: $env:CONNECTION_STRING = "mongodb connection string"; $env:DATABASE = "Database name"; $env:COLLECTION = "Collection Name"; $env:JSON_FILES_DIRECTORY = "path to json directory"
 
-If you are running it in a docker container you have 2 options:
+If you are running it in a docker container:
 
 1. Clone this repo and create an env.list file with the following values
 
