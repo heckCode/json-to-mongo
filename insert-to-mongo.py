@@ -1,6 +1,4 @@
-import argparse
 from pymongo import MongoClient
-import json
 import os
 import sys
 from bson.json_util import loads
