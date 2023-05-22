@@ -15,11 +15,15 @@ def parse_arguments():
         pass
 
     args = Args()
-    args.connection_string = os.getenv('CONNECTION_STRING')
-    args.database = os.getenv('DATABASE')
-    args.collection = os.getenv('COLLECTION')
-    args.json_files_directory = os.getenv('JSON_FILES_DIRECTORY')
-
+    
+    try:
+        args.connection_string = os.environ['CONNECTION_STRING'].strip()
+        args.database = os.environ['DATABASE'].strip()
+        args.collection = os.environ['COLLECTION'].strip()
+        args.json_files_directory = os.environ['JSON_FILES_DIRECTORY'].strip()
+    except KeyError as e:
+        print(f"Environment variable {e} is not set.")
+        sys.exit(1)  # or however you want to handle the error
 
     return args
 
