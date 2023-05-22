@@ -21,6 +21,9 @@ If you are running it in a docker container:
 
 #Build the image
 docker build -t <IMAGE> .
+    Where <IMAGE> is any image name you choose, just keep it simple and don't use spaces.  EXAMPLE:  docker build -t testimage1 .
 
 #Run the container
 docker run --env-file <path to env.list file> -v <path to json files>:/mapped_files <IMAGE>
+
+    EXAMPLE: docker run --env-file .\env.list -v c:\tmp\JSON4Docker:/mapped_files dimg1
