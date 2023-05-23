@@ -3,7 +3,7 @@
 If you are running the python file directly make sure you set the environment variables for it to work.
 
 #Linux and Mac: export CONNECTION_STRING="mongodb-connection-string" DATABASE="Name" COLLECTION="Name" JSON_FILES_DIRECTORY="path/to/json/directory"
-#Windows Powershell: $env:CONNECTION_STRING = "mongodb connection string"; $env:DATABASE = "Database name"; $env:COLLECTION = "Collection Name"; $env:JSON_FILES_DIRECTORY = "path to json directory"
+#Windows Powershell: $env:CONNECTION_STRING="mongodb-connection-string"; $env:DATABASE="Database-name"; $env:COLLECTION="Collection-Name"; $env:JSON_FILES_DIRECTORY="path to json directory"
 
 If you are running it in a docker container:
 
