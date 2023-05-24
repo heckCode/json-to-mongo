@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from tqdm import tqdm
 import os
 import sys
 from bson.json_util import loads
@@ -15,26 +16,23 @@ def parse_arguments():
         pass
 
     args = Args()
-    
-    try:
-        args.connection_string = os.environ['CONNECTION_STRING'].strip()
-        args.database = os.environ['DATABASE'].strip()
-        args.collection = os.environ['COLLECTION'].strip()
-        args.json_files_directory = os.environ['JSON_FILES_DIRECTORY'].strip()
-    except KeyError as e:
-        print(f"Environment variable {e} is not set.")
-        sys.exit(1)  # or however you want to handle the error
+    args.connection_string = os.getenv('CONNECTION_STRING')
+    args.database = os.getenv('DATABASE')
+    args.collection = os.getenv('COLLECTION')
+    args.json_files_directory = os.getenv('JSON_FILES_DIRECTORY')
+
 
     return args
 
 
 
 def main():
+    sys.stdout.flush()
     args = parse_arguments()
-    
-    #print connection string
-    print(f"Connection string: {args.connection_string}")
 
+    # Print message to the console
+    print(f"Inserting JSON files from directory '{args.json_files_directory}' into MongoDB collection '{args.collection}'")
+   
     try:
         # Establish a connection to MongoDB
         client = MongoClient(args.connection_string)
@@ -47,10 +45,17 @@ def main():
         directory = args.json_files_directory
         inserted_resume_counter = 0
 
+        # Get the total number of JSON files
+        total_files = sum(1 for filename in os.listdir(directory) if filename.endswith('.json'))
+
+        # Create a progress bar
+        progress_bar = tqdm(total=total_files)
+
         for filename in os.listdir(directory):
             if filename.endswith('.json'):
                 with open(os.path.join(directory, filename), 'r') as file:
                     try:
+                        # Load the JSON data from the file as BSON
                         data = loads(file.read())
                         # Check if data is a list
                         if isinstance(data, list):
@@ -58,11 +63,18 @@ def main():
                         else:
                             collection.insert_one(data)
 
-                        inserted_resume_counter += 1   
+                        inserted_resume_counter += 1
+
+                        # Update the progress bar
+                        progress_bar.update(1)
+                        progress_bar.set_description(f"Progress: {inserted_resume_counter}/{total_files}")
+                        sys.stdout.flush()
 
                     except Exception as e:
                         print(f"Error inserting data from file {filename}: {str(e)}")
 
+        # Close the progress bar
+        progress_bar.close()
 
     except Exception as e:
         print(f"An error occurred: {str(e)}")
@@ -73,8 +85,9 @@ def main():
         if 'client' in locals():
             client.close()
 
+
         
-    print(f"Inserted {inserted_resume_counter} resumes into MongoDB")
+    print(f"Inserted {inserted_resume_counter} files into MongoDB for a total of {collection.count_documents({})} documents")
 
 if __name__ == '__main__':
     main()
